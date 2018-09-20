@@ -5,11 +5,8 @@ import {
   View,
   Text,
   ScrollView,
-  TouchableOpacity,
-  StyleSheet,
   ActivityIndicator
 } from 'react-native';
-import { Icon } from 'react-native-elements';
 import { Constants } from 'expo';
 
 import socket from '../helpers/socketHelper';
@@ -60,14 +57,19 @@ class KitsList extends React.Component {
     });
   }
 
+  renderKits() {
+    return _.map(this.state.kits.kitsList, (val, key) => {
+      return <Kit key={key} name={val.kitName} state={val.kitStatus} />;
+    });
+  }
+
   renderContent() {
     if (_.size(this.state.kits) > 0) {
       if (this.state.kits.elements) {
         //En caso que existan kits
         return (
           <ScrollView >
-            <Kit name='Galpon' />
-            <Kit color='red' />
+            {this.renderKits()}
           </ScrollView>
         );
       }
@@ -86,23 +88,8 @@ class KitsList extends React.Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-
+      <View>
         {this.renderContent()}
-
-        <View style={styles.ButtonView}>
-          <TouchableOpacity
-            style={styles.AddkitButton}
-            onPress={() => this.props.navigation.navigate('AddKit')}
-          >
-             <Icon
-               name={'add'}
-               size={30}
-               color="white"
-             />
-           </TouchableOpacity>
-        </View>
-
       </View>
     );
   }
@@ -115,19 +102,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {})(KitsList);
-
-const styles = StyleSheet.create({
-  AddkitButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 70,
-    height: 70,
-    backgroundColor: 'green',
-    borderRadius: 70,
-  },
-  ButtonView: {
-    position: 'absolute',
-    bottom: 10,
-    right: 10
-  }
-});
