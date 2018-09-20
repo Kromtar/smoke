@@ -1,20 +1,21 @@
 import React from 'react';
-import { createStackNavigator } from 'react-navigation';
-import HomeScreen from './screens/Home';
-import ScannerQR from './screens/ScannerQR';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import reduxThunk from 'redux-thunk';
+
+import reducers from './reducers';
+import RootStack from './helpers/navigator';
+
+export const store = createStore(reducers, {},
+  compose(applyMiddleware(reduxThunk))
+);
 
 export default class App extends React.Component {
   render() {
-    return <RootStack />;
+    return (
+      <Provider store={store}>
+        <RootStack />
+      </Provider>
+    );
   }
 }
-
-const RootStack = createStackNavigator(
-  {
-    Home: HomeScreen,
-    ScannerQR: ScannerQR,
-  },
-  {
-    initialRouteName: 'Home',
-  }
-);

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button, View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { Constants, BarCodeScanner, Permissions } from 'expo';
 
 import socket from '../helpers/socketHelper';
 
-export default class ScannerQR extends React.Component {
+export default class AddKit extends React.Component {
 
   static navigationOptions = {
     title: 'Scanner QR',
