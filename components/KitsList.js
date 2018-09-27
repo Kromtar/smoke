@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import {
   View,
   Text,
+  TouchableOpacity,
   ScrollView,
   ActivityIndicator
 } from 'react-native';
@@ -12,6 +13,7 @@ import { Constants } from 'expo';
 import socket from '../helpers/socketHelper';
 import Kit from './kit';
 import { allKitsStatusUpdaterFaker } from '../helpers/fakeSocket';
+import KitViewer from './KitViewer';
 
 //TODO: En caso que por allkitsstatus llegue hay una alerta, se cambia a ventana de kit
 //se pueden tener todos los on en el socket helper y los emit en las actions y ejecutar desde aca
@@ -26,6 +28,7 @@ class KitsList extends React.Component {
 
     this.allKitsStatusUpdater = this.allKitsStatusUpdater.bind(this);
     this.allkitsStatusHandler = this.allkitsStatusHandler.bind(this);
+    this.openKitReviewHandler = this.openKitReviewHandler.bind(this);
   }
 
   //Luego que se monta el componente (no se activa por cambio de props)
@@ -60,9 +63,22 @@ class KitsList extends React.Component {
     });
   }
 
+  openKitReviewHandler(key) {
+    console.log('Click en kit: ', key);
+  }
+
   renderKits() {
+    //TODO: pasar estados de kit a un reducer global
     return _.map(this.state.kits.kitsList, (val, key) => {
-      return <Kit key={key} name={val.kitName} state={val.kitStatus} />;
+      return (
+        <TouchableOpacity key={key} onPress={() => this.openKitReviewHandler(key)}>
+          <Kit
+            key={key}
+            name={val.kitName}
+            state={val.kitStatus}
+          />
+        </TouchableOpacity>
+    );
     });
   }
 

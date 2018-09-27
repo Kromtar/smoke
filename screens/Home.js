@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
   View,
-  Text,
   TouchableOpacity,
   StyleSheet
 } from 'react-native';
@@ -10,6 +9,7 @@ import { Icon } from 'react-native-elements';
 
 import socket from '../helpers/socketHelper';
 import KitsList from '../components/KitsList';
+import KitViewer from '../components/KitViewer';
 
 import * as actions from '../actions';
 
@@ -60,12 +60,10 @@ class HomeScreen extends React.Component {
       return (
         <View style={{ flex: 1 }}>
           <KitsList />
-
           <View style={styles.ButtonView}>
             <TouchableOpacity
               style={styles.AddkitButton}
-              //onPress={() => this.props.navigation.navigate('AddKit')}
-              onPress={() => this.props.incomeAlert(alertFaker)}
+              onPress={() => this.props.navigation.navigate('AddKit')}
             >
                <Icon
                  name={'add'}
@@ -74,13 +72,30 @@ class HomeScreen extends React.Component {
                />
              </TouchableOpacity>
           </View>
+
+          <View style={styles.TESTBUTTONVIEw}>
+            <TouchableOpacity
+              style={styles.TESTBUTTOn}
+              onPress={() => this.props.incomeAlert(alertFaker)}
+            >
+               <Icon
+                 name={'toc'}
+                 size={30}
+                 color="red"
+               />
+             </TouchableOpacity>
+          </View>
+
         </View>
       );
-    } else {
-      return (
-        <Text>ALGO VA MAL EN EL SENSOR: {this.props.alert.kitName}</Text>
-      );
     }
+    return (
+      //TODO: Cambiar por una ventana en el navigator
+      <KitViewer
+        name={this.props.alert.kitName}
+        state={this.props.alert.kitStatus}
+      />
+    );
   }
 
   render() {
@@ -114,5 +129,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     right: 10
-  }
+  },
+  TESTBUTTONVIEw: {
+    position: 'absolute',
+    bottom: 100,
+    right: 10
+  },
+  TESTBUTTOn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 70,
+    height: 70,
+    backgroundColor: 'black',
+    borderRadius: 70,
+  },
 });
