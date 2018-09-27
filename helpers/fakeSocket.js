@@ -4,22 +4,42 @@ export const allKitsStatusUpdaterFaker = {
     a1234: {
       kitName: 'Test1',
       kitStatus: 'bien',
-      sensorStatus: {
-        a11234: 'bien'
-      },
-      sensorName: {
-        a11234: 'Sensor 1'
+      sensor: {
+        a11234: {
+          nombre: 'test1',
+          status: 'bien'
+        },
+        a11235: {
+          nombre: 'test2',
+          status: 'bien'
+        }
       }
     },
     a1235: {
       kitName: 'Test2',
       kitStatus: 'mal',
-      sensorStatus: {
-        a11234: 'mal'
-      },
-      sensorName: {
-        a11234: 'Sensor 1'
+      sensor: {
+        a115364: {
+          nombre: 'test1',
+          status: 'bien'
+        }
       }
+    }
+  }
+};
+
+export const alertFaker = {
+  kitCode: 'a1234',
+  kitName: 'Test1',
+  kitStatus: 'mal',
+  sensor: {
+    a11234: {
+      nombre: 'test1',
+      status: 'mal'
+    },
+    a11235: {
+      nombre: 'test2',
+      status: 'bien'
     }
   }
 };

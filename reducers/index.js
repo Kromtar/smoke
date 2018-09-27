@@ -1,9 +1,13 @@
 import { combineReducers } from 'redux';
 
 import test from './test';
-import app from './app';
+import {
+  conectionStateReducer,
+  alertReducer
+} from './app';
 
 export default combineReducers({
   test,
-  app
+  conectionStateReducer,
+  alertReducer
 });

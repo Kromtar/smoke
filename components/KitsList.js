@@ -13,6 +13,9 @@ import socket from '../helpers/socketHelper';
 import Kit from './kit';
 import { allKitsStatusUpdaterFaker } from '../helpers/fakeSocket';
 
+//TODO: En caso que por allkitsstatus llegue hay una alerta, se cambia a ventana de kit
+//se pueden tener todos los on en el socket helper y los emit en las actions y ejecutar desde aca
+
 class KitsList extends React.Component {
 
   constructor(props) {

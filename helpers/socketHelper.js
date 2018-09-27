@@ -11,6 +11,7 @@ const socket = io(process.env.SERVERURL);
 socket.on('connect', () => {
   console.log('Connection OK socket.io');
   store.dispatch({ type: CONECTIONSTATE, payload: { conectionState: true } });
+  //TODO: dejar aqui el on de alert ?? 
 });
 
 socket.on('connect_failed', () => {
