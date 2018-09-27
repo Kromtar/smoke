@@ -5,9 +5,11 @@ import {
   conectionStateReducer,
   alertReducer
 } from './app';
+import allKitStatus from './allKitStatus';
 
 export default combineReducers({
   test,
   conectionStateReducer,
-  alertReducer
+  alertReducer,
+  allKitStatus
 });

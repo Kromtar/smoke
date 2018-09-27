@@ -9,7 +9,6 @@ import { Icon } from 'react-native-elements';
 
 import socket from '../helpers/socketHelper';
 import KitsList from '../components/KitsList';
-import KitViewer from '../components/KitViewer';
 
 import * as actions from '../actions';
 
@@ -27,6 +26,8 @@ class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.initOnEvents = this.initOnEvents.bind(this);
+    this.alertHandler = this.alertHandler.bind(this);
+    this.onClickInKitHandler = this.onClickInKitHandler.bind(this);
     this.alertHandler = this.alertHandler.bind(this);
   }
 
@@ -46,62 +47,51 @@ class HomeScreen extends React.Component {
     }
   }
 
+  onClickInKitHandler(key) {
+    this.props.navigation.navigate('KitViewer', { key });
+  }
+
   initOnEvents() {
     socket.on('alert', this.alertHandler);
   }
 
   alertHandler(data) {
-    //console.log('Alert data: ', data);
     this.props.incomeAlert(data);
-  }
-
-  renderContent() {
-    if (this.props.alert.kitStatus === 'bien') {
-      return (
-        <View style={{ flex: 1 }}>
-          <KitsList />
-          <View style={styles.ButtonView}>
-            <TouchableOpacity
-              style={styles.AddkitButton}
-              onPress={() => this.props.navigation.navigate('AddKit')}
-            >
-               <Icon
-                 name={'add'}
-                 size={30}
-                 color="white"
-               />
-             </TouchableOpacity>
-          </View>
-
-          <View style={styles.TESTBUTTONVIEw}>
-            <TouchableOpacity
-              style={styles.TESTBUTTOn}
-              onPress={() => this.props.incomeAlert(alertFaker)}
-            >
-               <Icon
-                 name={'toc'}
-                 size={30}
-                 color="red"
-               />
-             </TouchableOpacity>
-          </View>
-
-        </View>
-      );
-    }
-    return (
-      //TODO: Cambiar por una ventana en el navigator
-      <KitViewer
-        name={this.props.alert.kitName}
-        state={this.props.alert.kitStatus}
-      />
-    );
+    this.props.navigation.navigate('KitViewer', { key: data.kitCode });
   }
 
   render() {
     return (
       <View style={{ flex: 1 }}>
-        {this.renderContent()}
+        <KitsList
+          onClickInKit={(key) => this.onClickInKitHandler(key)}
+        />
+        <View style={styles.ButtonView}>
+          <TouchableOpacity
+            style={styles.AddkitButton}
+            onPress={() => this.props.navigation.navigate('AddKit')}
+          >
+             <Icon
+               name={'add'}
+               size={30}
+               color="white"
+             />
+           </TouchableOpacity>
+        </View>
+
+        <View style={styles.TESTBUTTONVIEw}>
+          <TouchableOpacity
+            style={styles.TESTBUTTOn}
+            onPress={() => this.alertHandler(alertFaker)}
+          >
+             <Icon
+               name={'toc'}
+               size={30}
+               color="red"
+             />
+           </TouchableOpacity>
+        </View>
+
       </View>
     );
   }

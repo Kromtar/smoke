@@ -6,10 +6,16 @@ import {
 
 class KitViewer extends React.Component {
 
+  static navigationOptions = {
+    title: 'Smoke',
+  };
+
   render() {
+    const key = this.props.navigation.getParam('key', 'nada');
+
     return (
       <View>
-        <Text>El sensor {this.props.name} esta: {this.props.state}</Text>
+        <Text>El sensor {key} esta: {this.props.state}</Text>
       </View>
     );
   }
