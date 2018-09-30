@@ -1,8 +1,7 @@
 import React from 'react';
-import {
-  View,
-  Text,
-} from 'react-native';
+import { View } from 'react-native';
+
+import KitDetail from '../components/KitDetail';
 
 class KitViewer extends React.Component {
 
@@ -11,11 +10,11 @@ class KitViewer extends React.Component {
   };
 
   render() {
-    const key = this.props.navigation.getParam('key', 'nada');
+    const kitKey = this.props.navigation.getParam('kitKey', 'nada');
 
     return (
       <View>
-        <Text>El sensor {key} esta: {this.props.state}</Text>
+        <KitDetail kitKey={kitKey} />
       </View>
     );
   }

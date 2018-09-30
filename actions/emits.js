@@ -1,5 +1,9 @@
+/*
+  Acciones para manejar EMITS de socket
+*/
 import socket from '../helpers/socketHelper';
 
-export const EMITcheckallstatus = (phoneID) => {
+//TODO: quitar dispatch, no se ocupa (pero si no se pone hay error de syntaxis)
+export const EMITcheckallstatus = (phoneID) => async dispatch => {
   socket.emit('checkallstatus', { phoneID });
 };

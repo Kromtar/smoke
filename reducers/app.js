@@ -1,27 +1,13 @@
 import {
-  CONECTIONSTATE,
-  ALERT
+  CONECTIONSTATE
 } from '../actions/types';
 
-const conectionStateReducer = (state = false, action) => {
+export default function (state = false, action) {
   switch (action.type) {
+    //Para que los componentes puedan saber el estado de socket.
     case CONECTIONSTATE:
       return action.payload.conectionState;
     default:
       return state;
   }
-};
-
-const alertReducer = (state = { kitStatus: 'bien' }, action) => {
-  switch (action.type) {
-    case ALERT:
-      return action.payload.data;
-    default:
-      return state;
-  }
-};
-
-module.exports = {
-    conectionStateReducer,
-    alertReducer
-};
+}

@@ -17,7 +17,7 @@ export const allKitsStatusUpdaterFaker = {
     },
     a1235: {
       kitName: 'Test2',
-      kitStatus: 'mal',
+      kitStatus: 'bien',
       sensor: {
         a115364: {
           nombre: 'test1',
@@ -29,17 +29,18 @@ export const allKitsStatusUpdaterFaker = {
 };
 
 export const alertFaker = {
-  kitCode: 'a1234',
-  kitName: 'Test1',
-  kitStatus: 'mal',
-  sensor: {
-    a11234: {
-      nombre: 'test1',
-      status: 'mal'
-    },
-    a11235: {
-      nombre: 'test2',
-      status: 'bien'
+  a1234: {
+    kitName: 'Test1',
+    kitStatus: 'mal',
+    sensor: {
+      a11234: {
+        nombre: 'test1',
+        status: 'mal'
+      },
+      a11235: {
+        nombre: 'test2',
+        status: 'bien'
+      }
     }
   }
 };

@@ -1,9 +1,18 @@
-import { TEST } from '../actions/types';
+import update from 'immutability-helper';
 
-export default function (state = 0, action) {
+import {
+  ALLKITSATUS,
+  ALERT
+ } from '../actions/types';
+
+//Memoria con todos los kits y sensores
+export default function (state = {}, action) {
   switch (action.type) {
-    case TEST:
-      return action.payload;
+    case ALLKITSATUS:
+      return action.payload.data;
+    //En caso de una alerta acutalizamos solo el kit que en peligro.
+    case ALERT:
+      return update(state, { kitsList: { $merge: action.payload.data } });
     default:
       return state;
   }

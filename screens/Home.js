@@ -6,16 +6,12 @@ import {
   StyleSheet
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-
-import socket from '../helpers/socketHelper';
+import * as actions from '../actions';
 import KitsList from '../components/KitsList';
 
-import * as actions from '../actions';
-
-import { alertFaker } from '../helpers/fakeSocket';
-
-//TODO: En caso que llegue una alerta, se cambia a ventana del kit
-// mover alerta on al helper de socket ??
+//TODO: Dejar de ocupar el paramtro "elements" del objeto "allKitStatus"
+//para verificar si existen kits. Reemplazar por un size del objeto.
+//TODO: Integrar pushNotifications
 
 class HomeScreen extends React.Component {
 
@@ -25,42 +21,28 @@ class HomeScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.initOnEvents = this.initOnEvents.bind(this);
-    this.alertHandler = this.alertHandler.bind(this);
     this.onClickInKitHandler = this.onClickInKitHandler.bind(this);
-    this.alertHandler = this.alertHandler.bind(this);
   }
 
-  //Luego que se monta el componente (no se activa por cambio de props)
-  //Comprobamos que el socket este activo.
-  componentDidMount() {
-    if (this.props.conectionState) {
-      this.initOnEvents();
-    }
-  }
-
-  //Cuando el componente recibe nuevas props.
-  //Comprobamos que el socket este activo.
   componentWillReceiveProps(newProps) {
-    if (newProps.conectionState) {
-      this.initOnEvents();
+    //Cada vez que los kits son actualizados, esta pantalla los revisa.
+    //En caso de que alguno tenga un status "mal", se despliega la ventana
+    //correspondiente de dicho kit.
+    if (newProps.allKitStatus.elements) {
+      Object.keys(newProps.allKitStatus.kitsList).forEach((key) => {
+        if (newProps.allKitStatus.kitsList[key].kitStatus === 'mal') {
+          this.props.navigation.navigate('KitViewer', { kitKey: key });
+        }
+      });
     }
   }
 
   onClickInKitHandler(key) {
-    this.props.navigation.navigate('KitViewer', { key });
-  }
-
-  initOnEvents() {
-    socket.on('alert', this.alertHandler);
-  }
-
-  alertHandler(data) {
-    this.props.incomeAlert(data);
-    this.props.navigation.navigate('KitViewer', { key: data.kitCode });
+    this.props.navigation.navigate('KitViewer', { kitKey: key });
   }
 
   render() {
+    //TODO: Quitar boton para ejecutar la aler faker.
     return (
       <View style={{ flex: 1 }}>
         <KitsList
@@ -82,7 +64,7 @@ class HomeScreen extends React.Component {
         <View style={styles.TESTBUTTONVIEw}>
           <TouchableOpacity
             style={styles.TESTBUTTOn}
-            onPress={() => this.alertHandler(alertFaker)}
+            onPress={() => this.props.FAKERalert()}
           >
              <Icon
                name={'toc'}
@@ -99,8 +81,7 @@ class HomeScreen extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    conectionState: state.conectionStateReducer,
-    alert: state.alertReducer
+    allKitStatus: state.allKitStatus
   };
 }
 

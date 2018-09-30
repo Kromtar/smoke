@@ -10,57 +10,47 @@ import {
 } from 'react-native';
 import { Constants } from 'expo';
 
+import * as actions from '../actions';
 import Kit from './kit';
-import { allKitsStatusUpdaterFaker } from '../helpers/fakeSocket';
 
-//TODO: En caso que por allkitsstatus llegue hay una alerta, se cambia a ventana de kit
-//se pueden tener todos los on en el socket helper y los emit en las actions y ejecutar desde aca
+//TODO: Dejar de ocupar el paramtro "elements" del objeto "allKitStatus"
+//para verificar si existen kits. Reemplazar por un size del objeto.
 
 class KitsList extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      kits: {},
-    };
-
     this.allKitsStatusUpdater = this.allKitsStatusUpdater.bind(this);
-    this.allkitsStatusHandler = this.allkitsStatusHandler.bind(this);
   }
 
-  //Luego que se monta el componente (no se activa por cambio de props)
-  //Comprobamos que el socket este activo.
+  //Luego que se monta el componente:
+  //Comprobamos que el socket este conectado.
+  //process.env.FAKESOCKETIO ---> para poder cargar el faker independiente del socket
   componentDidMount() {
-    if (this.props.conectionState || process.env.FAKESOCKETIO) {
+    if (this.props.conectionState) {
       this.allKitsStatusUpdater();
+    }
+    //Para cargar los datos falsos
+    if (process.env.FAKESOCKETIO) {
+      this.props.FAKERallkitsstatus();
     }
   }
 
   //Cuando el componente recibe nuevas props.
-  //Comprobamos que el socket este activo.
+  //Comprobamos si el socket paso de estar desconectado a conectado.
+  //Lo anterior para manejar casos de desconeccion
   componentWillReceiveProps(newProps) {
-    if (newProps.conectionState) {
+    if (this.props.conectionState === false && newProps.conectionState === true) {
       this.allKitsStatusUpdater();
     }
   }
 
   allKitsStatusUpdater() {
-    if (!process.env.FAKESOCKETIO) {
-      this.props.EMITcheckallstatus(Constants.installationId);
-    } else {
-      this.allkitsStatusHandler(allKitsStatusUpdaterFaker);
-    }
-  }
-
-  allkitsStatusHandler(data) {
-    this.setState({
-      kits: data
-    });
+    this.props.EMITcheckallstatus(Constants.installationId);
   }
 
   renderKits() {
-    //TODO: pasar estados de kit a un reducer global
-    return _.map(this.state.kits.kitsList, (val, key) => {
+    return _.map(this.props.allKitStatus.kitsList, (val, key) => {
       return (
         <TouchableOpacity key={key} onPress={() => this.props.onClickInKit(key)}>
           <Kit
@@ -74,9 +64,9 @@ class KitsList extends React.Component {
   }
 
   renderContent() {
-    if (_.size(this.state.kits) > 0) {
-      if (this.state.kits.elements) {
-        //En caso que existan kits
+    if (_.size(this.props.allKitStatus) > 0) {
+      if (this.props.allKitStatus.elements) {
+        //En caso que existan kits en el reducer
         return (
           <ScrollView >
             {this.renderKits()}
@@ -84,7 +74,7 @@ class KitsList extends React.Component {
         );
       }
       return (
-        //En caso qe no existan kits
+        //En caso qe no existan kits reducer
         <Text>
           No hay elementos
         </Text>
@@ -107,8 +97,9 @@ class KitsList extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    conectionState: state.app
+    conectionState: state.app,       //Tiene el estado de la conexión
+    allKitStatus: state.allKitStatus //Tiene la lista de kits y sensores
   };
 }
 
-export default connect(mapStateToProps, {})(KitsList);
+export default connect(mapStateToProps, actions)(KitsList);
