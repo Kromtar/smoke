@@ -1,6 +1,5 @@
 import React from 'react';
 import { View } from 'react-native';
-
 import KitDetail from '../components/KitDetail';
 
 class KitViewer extends React.Component {

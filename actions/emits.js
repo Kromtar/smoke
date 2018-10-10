@@ -7,3 +7,7 @@ import socket from '../helpers/socketHelper';
 export const EMITcheckallstatus = (phoneID) => async dispatch => {
   socket.emit('checkallstatus', { phoneID });
 };
+
+export const EMITalertresponse = (response) => async dispatch => {
+  socket.emit('alertresponse', { response });
+};

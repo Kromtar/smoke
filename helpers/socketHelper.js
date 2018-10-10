@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
 import { store } from '../App';
+import Expo from 'expo';
 
 import {
   CONECTIONSTATE,
@@ -15,7 +16,7 @@ socket.on('connect', () => {
   console.log('Connection OK socket.io');
   store.dispatch({ type: CONECTIONSTATE, payload: { conectionState: true } });
 
-
+  socket.emit('AppLogin', { phoneid: 1 });  // change to Expo.Constants.installationId
   //--  Lista de eventos ON --//
   socket.on('allkitsstatus', allkitsStatusHandler);
   socket.on('alert', alertHandler);
