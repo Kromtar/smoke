@@ -2,5 +2,4 @@ node_modules/**/*
 .expo/*
 npm-debug.*
 
-# dotenv environment variables file
 .env
