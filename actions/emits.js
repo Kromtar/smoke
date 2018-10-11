@@ -9,5 +9,6 @@ export const EMITcheckallstatus = (phoneID) => async dispatch => {
 };
 
 export const EMITalertresponse = (response) => async dispatch => {
-  socket.emit('alertresponse', { response });
+  console.log(response);
+  socket.emit('alertresponse', response);
 };

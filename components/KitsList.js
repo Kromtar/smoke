@@ -30,10 +30,6 @@ class KitsList extends React.Component {
     if (this.props.conectionState) {
       this.allKitsStatusUpdater();
     }
-    //Para cargar los datos falsos
-    if (process.env.FAKESOCKETIO) {
-      this.props.FAKERallkitsstatus();
-    }
   }
 
   //Cuando el componente recibe nuevas props.

@@ -1,26 +1,26 @@
 export const allKitsStatusUpdaterFaker = {
   elements: true,
   kitsList: {
-    a1234: {
-      kitName: 'Test1',
+    k1000: {
+      kitName: 'Nombre kit 1',
       kitStatus: 'bien',
       sensor: {
-        a11234: {
-          nombre: 'test1',
+        k1000s1: {
+          nombre: 'Sensor 1 del  kit 1',
           status: 'bien'
         },
-        a11235: {
-          nombre: 'test2',
+        k1000s2: {
+          nombre: 'Sensor 2 del kit 1',
           status: 'bien'
         }
       }
     },
-    a1235: {
-      kitName: 'Test2',
+    k2000: {
+      kitName: 'Nombre kit 2',
       kitStatus: 'bien',
       sensor: {
-        a115364: {
-          nombre: 'test1',
+        k2000s1: {
+          nombre: 'Sensor 1 del  kit 2',
           status: 'bien'
         }
       }

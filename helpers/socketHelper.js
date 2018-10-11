@@ -5,7 +5,8 @@ import Expo from 'expo';
 import {
   CONECTIONSTATE,
   ALLKITSATUS,
-  ALERT
+  ALERT,
+  KITSTATUS
 } from '../actions/types';
 
 
@@ -16,10 +17,12 @@ socket.on('connect', () => {
   console.log('Connection OK socket.io');
   store.dispatch({ type: CONECTIONSTATE, payload: { conectionState: true } });
 
-  socket.emit('AppLogin', { phoneid: 1 });  // change to Expo.Constants.installationId
+  socket.emit('applogin', { phoneid: 1 });  // change to Expo.Constants.installationId
   //--  Lista de eventos ON --//
+  socket.emit('checkallstatus', {});
   socket.on('allkitsstatus', allkitsStatusHandler);
   socket.on('alert', alertHandler);
+  socket.on('alertresponseconfirm', alertresponseconfirmHandler);
 });
 
 //Cuando el server envia la lista de kits
@@ -32,6 +35,12 @@ function allkitsStatusHandler(data) {
 function alertHandler(data) {
   console.log(data);
   store.dispatch({ type: ALERT, payload: { data } });
+}
+
+//Cuando el server actualiza la info luego de responder a una alerta
+function alertresponseconfirmHandler(data) {
+  console.log(data);
+  store.dispatch({ type: KITSTATUS, payload: { data } });
 }
 
 socket.on('connect_failed', () => {

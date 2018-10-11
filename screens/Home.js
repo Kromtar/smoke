@@ -61,19 +61,6 @@ class HomeScreen extends React.Component {
            </TouchableOpacity>
         </View>
 
-        <View style={styles.TESTBUTTONVIEw}>
-          <TouchableOpacity
-            style={styles.TESTBUTTOn}
-            onPress={() => this.props.FAKERalert()}
-          >
-             <Icon
-               name={'toc'}
-               size={30}
-               color="red"
-             />
-           </TouchableOpacity>
-        </View>
-
       </View>
     );
   }
