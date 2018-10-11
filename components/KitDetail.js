@@ -16,7 +16,7 @@ class KitDetail extends React.Component {
           esta: {this.props.allKitStatus.kitsList[this.props.kitKey].kitStatus}
         </Text>
         <Text>Aqui va los detalles del kit, la lista de sus sensores y mas...</Text>
-        { this.props.allKitStatus.kitsList[this.props.kitKey].kitStatus == 'mal' &&
+        { this.props.allKitStatus.kitsList[this.props.kitKey].kitStatus === 'mal' &&
         <View>
           <View style={styles.buttonBackView}>
               <TouchableOpacity
