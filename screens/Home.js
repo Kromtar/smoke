@@ -1,11 +1,19 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-//import SocketIOClient from 'socket.io-client';
-import { Button } from 'react-native-elements';
+import { connect } from 'react-redux';
+import {
+  View,
+  TouchableOpacity,
+  StyleSheet
+} from 'react-native';
+import { Icon } from 'react-native-elements';
+import * as actions from '../actions';
+import KitsList from '../components/KitsList';
 
-import socket from '../helpers/socketHelper';
+//TODO: Dejar de ocupar el paramtro "elements" del objeto "allKitStatus"
+//para verificar si existen kits. Reemplazar por un size del objeto.
+//TODO: Integrar pushNotifications
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
 
   static navigationOptions = {
     title: 'Smoke',
@@ -13,56 +21,84 @@ export default class HomeScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      messages: 'Test',
-      alert: false,
-      hasCameraPermission: null,
-    };
-
-    this.onReceivedMessage = this.onReceivedMessage.bind(this);
-    this.sendResponse = this.sendResponse.bind(this);
-
-    socket.on('alert', this.onReceivedMessage);
+    this.onClickInKitHandler = this.onClickInKitHandler.bind(this);
   }
 
-  onReceivedMessage(messages) {
-    console.log(messages);
-    this.setState({ alert: true });
-  }
-
-  sendResponse() {
-    console.log('OK');
-     socket.emit('alertresponse', this.state.messages);
-  }
-
-  renderResponseButton() {
-    if (this.state.alert) {
-      return (
-        <View>
-          <Button
-            title="Verdadero"
-            onPress={() => this.sendResponse()}
-          />
-          <Button
-            title="Falso"
-            onPress={() => this.sendResponse()}
-          />
-        </View>
-      );
+  componentWillReceiveProps(newProps) {
+    //Cada vez que los kits son actualizados, esta pantalla los revisa.
+    //En caso de que alguno tenga un status "mal", se despliega la ventana
+    //correspondiente de dicho kit.
+    if (newProps.allKitStatus.elements) {
+      Object.keys(newProps.allKitStatus.kitsList).forEach((key) => {
+        if (newProps.allKitStatus.kitsList[key].kitStatus === 'mal') {
+          this.props.navigation.navigate('KitViewer', { kitKey: key });
+        }
+      });
     }
   }
 
+  onClickInKitHandler(key) {
+    this.props.navigation.navigate('KitViewer', { kitKey: key });
+  }
+
   render() {
+    //TODO: Quitar boton para ejecutar la aler faker.
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>Este es un contador de socket.io</Text>
-        <Text>{this.state.messages}</Text>
-        <Button
-          title="Ir a scanner QR"
-          onPress={() => this.props.navigation.navigate('ScannerQR')}
+      <View style={{ flex: 1 }}>
+        <KitsList
+          onClickInKit={(key) => this.onClickInKitHandler(key)}
         />
-        { this.renderResponseButton() }
+        <View style={styles.ButtonView}>
+          <TouchableOpacity
+            style={styles.AddkitButton}
+            onPress={() => this.props.navigation.navigate('AddKit')}
+          >
+             <Icon
+               name={'add'}
+               size={30}
+               color="white"
+             />
+           </TouchableOpacity>
+        </View>
+
       </View>
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    allKitStatus: state.allKitStatus
+  };
+}
+
+export default connect(mapStateToProps, actions)(HomeScreen);
+
+const styles = StyleSheet.create({
+  AddkitButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 70,
+    height: 70,
+    backgroundColor: 'green',
+    borderRadius: 70,
+  },
+  ButtonView: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10
+  },
+  TESTBUTTONVIEw: {
+    position: 'absolute',
+    bottom: 100,
+    right: 10
+  },
+  TESTBUTTOn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 70,
+    height: 70,
+    backgroundColor: 'black',
+    borderRadius: 70,
+  },
+});

@@ -1,10 +1,12 @@
 import React from 'react';
-import { Button, View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { Constants, BarCodeScanner, Permissions } from 'expo';
 
 import socket from '../helpers/socketHelper';
 
-export default class ScannerQR extends React.Component {
+//TODO: ESTA VENTANA ES UN EJEMPLO, NO ES CODIGO DEPURADO
+
+export default class AddKit extends React.Component {
 
   static navigationOptions = {
     title: 'Scanner QR',
@@ -45,18 +47,17 @@ export default class ScannerQR extends React.Component {
       return <Text>Requesting for camera permission</Text>;
     } else if (hasCameraPermission === false) {
       return <Text>No access to camera</Text>;
-    } else {
-      return (
-        <View style={styles.container}>
-          <BarCodeScanner
-            onBarCodeRead={this.handleBarCodeRead}
-            style={{ height: 200, width: 200 }}
-          />
-          <Text>{this.state.qr}</Text>
-          <Text>{this.state.messages}</Text>
-        </View>
-      );
     }
+    return (
+      <View style={styles.container}>
+        <BarCodeScanner
+          onBarCodeRead={this.handleBarCodeRead}
+          style={{ height: 200, width: 200 }}
+        />
+        <Text>{this.state.qr}</Text>
+        <Text>{this.state.messages}</Text>
+      </View>
+    );
   }
 }
 
