@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 import { store } from '../App';
-import { Expo, Notifications } from 'expo';
+import Expo from 'expo';
 
 import {
   CONECTIONSTATE,
@@ -9,15 +9,20 @@ import {
   KITSTATUS
 } from '../actions/types';
 
+import { getToken, handleNotification } from './pushNotification';
 
 const socket = io(process.env.SERVERURL);
 
 //Conecta al socket
+
 socket.on('connect', () => {
   console.log('Connection OK socket.io');
+  getToken().then((token)=>{
+    socket.emit('applogin', { phoneid: 1, phoneNotification: token });});
   store.dispatch({ type: CONECTIONSTATE, payload: { conectionState: true } });
-  socket.emit('applogin', { phoneid: 1 });  // change to Expo.Constants.installationId
+    // change to Expo.Constants.installationId
   //--  Lista de eventos ON --//
+  Expo.Notifications.addListener(handleNotification);
   socket.emit('checkallstatus', {});
   socket.on('allkitsstatus', allkitsStatusHandler);
   socket.on('alert', alertHandler);
@@ -49,5 +54,7 @@ socket.on('connect_failed', () => {
 socket.on('disconnect', () => {
   console.log('Disconnected socket.io');
 });
+
+
 
 export default socket;
