@@ -3,10 +3,13 @@ import { View, StyleSheet, Text } from 'react-native';
 import { Constants, BarCodeScanner, Permissions } from 'expo';
 
 import socket from '../helpers/socketHelper';
+import kit from '../components/kit';
+import * as actions from '../actions';
+import { connect } from 'react-redux';
 
 //TODO: ESTA VENTANA ES UN EJEMPLO, NO ES CODIGO DEPURADO
 
-export default class AddKit extends React.Component {
+class AddKit extends React.Component {
 
   static navigationOptions = {
     title: 'Scanner QR',
@@ -35,9 +38,15 @@ export default class AddKit extends React.Component {
   }
 
   handleBarCodeRead = ({ type, data }) => {
-    console.log(type, data);
     this.setState({ qr: data });
-    socket.emit('qr', data);
+    const kitID = data.split(',')[0];
+    console.log(`Type ${type}`)
+    if (kitID.split(':')[0] === 'kitID'){
+      console.log(`Type ${type} with data: ${kitID.split(':')[1]}`);
+      this.props.EMITalertresponse(kitID.split(':')[1]);//socket.emit('qr', kitID.split(':')[1]);  
+      
+    }
+    
   }
 
   render() {
@@ -52,7 +61,7 @@ export default class AddKit extends React.Component {
       <View style={styles.container}>
         <BarCodeScanner
           onBarCodeRead={this.handleBarCodeRead}
-          style={{ height: 200, width: 200 }}
+          style={{ height: 600, width: 400 }}
         />
         <Text>{this.state.qr}</Text>
         <Text>{this.state.messages}</Text>
@@ -60,6 +69,14 @@ export default class AddKit extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    allKitStatus: state.allKitStatus //Tiene la lista de kits y sensores
+  };
+}
+
+export default connect(mapStateToProps, actions)(AddKit);
 
 const styles = StyleSheet.create({
   container: {

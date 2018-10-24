@@ -12,3 +12,7 @@ export const EMITalertresponse = (response) => async dispatch => {
   console.log(response);
   socket.emit('alertresponse', response);
 };
+
+export const EMITaddkit = (data) => async dispatch => {
+  socket.emit('qr', { kitID: data });
+};
