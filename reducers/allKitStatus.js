@@ -13,7 +13,7 @@ export default function (state = {}, action) {
       return action.payload.data;
     //En caso de una alerta acutalizamos solo el kit que en peligro.
     case ALERT:
-      return update(state, { kitsList: { $merge: action.payload.data } });
+      return update(state, { kitsList: { $merge: action.payload.data.data } });
     case KITSTATUS:
       return update(state, { kitsList: { $merge: action.payload.data } });
     default:

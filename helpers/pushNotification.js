@@ -15,13 +15,15 @@ async function getToken() {
     return value;
   }
 function handleNotification ({origin,data}) {
-    //const dataPayload = JSON.stringify(data.data);
-    var datapayload = JSON.stringify(eval('('+data+')'));
+    //var dataPayload = JSON.parse(data);
+    
+    //var actionPayload = dataPayload;
     console.log(
-      `Push notification ${origin} with data: ${JSON.stringify(data)}`
+      `Push notification ${origin} with data: ${JSON.stringify(data)} 
+      And typeof data: ${typeof data}`
     );
-    if(data.origin == 'received' && typeof datapayload === 'object' ){
-        store.dispatch({ type: ALERT, payload: { datapayload } });
+    if(origin == 'received' && typeof data === 'object' ){
+        store.dispatch({ type: ALERT, payload: { data } });
     }
     else{
         console.log("Did not dispatch");

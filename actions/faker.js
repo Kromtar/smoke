@@ -5,7 +5,7 @@ import {
   ALLKITSATUS,
   ALERT
 } from './types';
-
+/*
 import { allKitsStatusUpdaterFaker, alertFaker } from '../helpers/fakeSocket';
 
 //Ejecuta un evento falso para leer el stado de distintos kits desde socket
@@ -17,3 +17,5 @@ export const FAKERallkitsstatus = () => dispatch => {
 export const FAKERalert = () => dispatch => {
   dispatch({ type: ALERT, payload: { data: alertFaker } });
 };
+
+*/

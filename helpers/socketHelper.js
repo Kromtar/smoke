@@ -55,6 +55,4 @@ socket.on('disconnect', () => {
   console.log('Disconnected socket.io');
 });
 
-
-
 export default socket;
