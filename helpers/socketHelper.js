@@ -11,7 +11,7 @@ import {
 
 import { handleNotification } from './pushNotification';
 
-const socket = io(process.env.SERVERURL);
+const socket = io('https://quiet-journey-37928.herokuapp.com');
 
 //Conecta al socket
 
