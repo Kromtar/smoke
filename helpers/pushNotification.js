@@ -1,6 +1,6 @@
 import Expo from 'expo';
 import { store } from '../App';
-import {ALERT} from '../actions/types';
+import { ALERT } from '../actions/types';
 
 async function getToken() {
     // Remote notifications do not work in simulators, only on device
@@ -22,13 +22,7 @@ function handleNotification ({origin,data}) {
       `Push notification ${origin} with data: ${JSON.stringify(data)} 
       And typeof data: ${typeof data}`
     );
-    if(origin == 'received' && typeof data === 'object' ){
-        store.dispatch({ type: ALERT, payload: { data } });
-    }
-    else{
-        console.log("Did not dispatch");
-    }
-  };
+  }
 
 module.exports= {
     getToken,

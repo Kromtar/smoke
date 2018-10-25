@@ -10,10 +10,12 @@ import {
 export default function (state = {}, action) {
   switch (action.type) {
     case ALLKITSATUS:
+      console.log("Allkitstatus Reducer : ", action.payload.data);
       return action.payload.data;
     //En caso de una alerta acutalizamos solo el kit que en peligro.
     case ALERT:
-      return update(state, { kitsList: { $merge: action.payload.data.data } });
+      console.log("Alert Reducer : ", action.payload.data.data);
+      return update(state, { kitsList: { $merge: action.payload.data.data } }); // TO DO: refactor que no sea data
     case KITSTATUS:
       return update(state, { kitsList: { $merge: action.payload.data } });
     default:

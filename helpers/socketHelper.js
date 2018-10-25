@@ -7,9 +7,9 @@ import {
   ALLKITSATUS,
   ALERT,
   KITSTATUS
-} from '../actions/types';
+} from '../actions/types';  
 
-import { getToken, handleNotification } from './pushNotification';
+import { handleNotification } from './pushNotification';
 
 const socket = io(process.env.SERVERURL);
 
@@ -17,13 +17,12 @@ const socket = io(process.env.SERVERURL);
 
 socket.on('connect', () => {
   console.log('Connection OK socket.io');
-  getToken().then((token)=>{
-    socket.emit('applogin', { phoneid: 1, phoneNotification: token });});
+  socket.emit('applogin', { phoneid: Expo.Constants.installationId });
   store.dispatch({ type: CONECTIONSTATE, payload: { conectionState: true } });
     // change to Expo.Constants.installationId
   //--  Lista de eventos ON --//
   Expo.Notifications.addListener(handleNotification);
-  socket.emit('checkallstatus', {});
+  socket.emit('checkallstatus', { phoneId: Expo.Constants.installationId });
   socket.on('allkitsstatus', allkitsStatusHandler);
   socket.on('alert', alertHandler);
   socket.on('alertresponseconfirm', alertresponseconfirmHandler);
@@ -31,13 +30,13 @@ socket.on('connect', () => {
 
 //Cuando el server envia la lista de kits
 function allkitsStatusHandler(data) {
-  console.log(data);
+  console.log('Kitstatus: ', data);
   store.dispatch({ type: ALLKITSATUS, payload: { data } });
 }
 
 //Cuando el server envia una alerta normal
 function alertHandler(data) {
-  console.log(data);
+  console.log('Alert: ', data);
   store.dispatch({ type: ALERT, payload: { data } });
 }
 

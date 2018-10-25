@@ -14,5 +14,5 @@ export const EMITalertresponse = (response) => async dispatch => {
 };
 
 export const EMITaddkit = (data) => async dispatch => {
-  socket.emit('qr', { kitID: data });
+  socket.emit('qr', data);
 };

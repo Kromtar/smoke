@@ -4,9 +4,11 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet } from 'react-native';
+  StyleSheet,
+  Button } from 'react-native';
 import { Icon } from 'react-native-elements';
 import * as actions from '../actions';
+import { NAVIGATIONback } from '../actions/navigation';
 
 class KitDetail extends React.Component {
   displayMessage() {
@@ -21,8 +23,9 @@ class KitDetail extends React.Component {
           <View style={styles.buttonBackView}>
               <TouchableOpacity
               style={styles.buttonBackOn}
-              onPress={() =>
-                this.props.EMITalertresponse({ kitID: 'k1000', response: 'verdadero' })}
+              onPress={() => {
+                this.props.EMITalertresponse({ kitID: this.props.kitKey, response: 'verdadero' });  
+              }}
               >
              <Icon
                name={'add-alert'}
@@ -34,8 +37,10 @@ class KitDetail extends React.Component {
           <View style={styles.buttonBackView2}>
               <TouchableOpacity
               style={styles.buttonBackOn}
-              onPress={() =>
-                this.props.EMITalertresponse({ kitID: 'k1000', response: 'falso' })}
+              onPress={() => {
+                this.props.EMITalertresponse({ kitID: this.props.kitKey, response: 'falso' });
+                //this.props.navigation.dispatch(NAVIGATIONback);
+              }}
               >
              <Icon
                name={'add-alert'}
@@ -66,12 +71,12 @@ export default connect(mapStateToProps, actions)(KitDetail);
 const styles = StyleSheet.create({
   buttonBackView: {
     position: 'absolute',
-    bottom: -100,
+    bottom: -200,
     right: 0
   },
   buttonBackView2: {
     position: 'absolute',
-    bottom: -30,
+    bottom: -100,
     right: 0
   },
   buttonBackOn: {
