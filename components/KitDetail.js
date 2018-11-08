@@ -24,7 +24,7 @@ class KitDetail extends React.Component {
               <TouchableOpacity
               style={styles.buttonBackOn}
               onPress={() => {
-                this.props.EMITalertresponse({ kitID: this.props.kitKey, response: 'verdadero' });  
+                this.props.EMITalertresponse({ kitId: this.props.kitKey, response: 'verdadero' });  
               }}
               >
              <Icon
@@ -38,7 +38,7 @@ class KitDetail extends React.Component {
               <TouchableOpacity
               style={styles.buttonBackOn}
               onPress={() => {
-                this.props.EMITalertresponse({ kitID: this.props.kitKey, response: 'falso' });
+                this.props.EMITalertresponse({ kitId: this.props.kitKey, response: 'falso' });
                 //this.props.navigation.dispatch(NAVIGATIONback);
               }}
               >

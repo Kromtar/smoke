@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 import { Constants, BarCodeScanner, Permissions } from 'expo';
+import Modal from "react-native-modal";
 
 import socket from '../helpers/socketHelper';
-import kit from '../components/kit';
+
 import * as actions from '../actions';
 import { connect } from 'react-redux';
 import { NAVIGATIONback } from '../actions/navigation';
@@ -23,6 +24,11 @@ class AddKit extends React.Component {
       messages: 'Test',
       alert: false,
       hasCameraPermission: null,
+      isModalVisible: false,
+      lock: true,
+      token: '',
+      kitId: '',
+      number: ''
     };
 
     this.onReceivedMessage = this.onReceivedMessage.bind(this);
@@ -37,21 +43,41 @@ class AddKit extends React.Component {
   onReceivedMessage(messages) {
     this.setState({ messages: messages.msg });
   }
+  _toggleModal = () => {
+    if (this.state.lock){
+      this.setState({ isModalVisible: !this.state.isModalVisible });
+      this.setState({ lock: !this.state.lock });
+    }
+  }
+  _tokenAdder = ({ kitIdData, tokenData }) => {
+    this.setState({ token: tokenData });
+    this.setState({ kitId: kitIdData });
+  }
 
+  _pusher = () => {
+    this.props.EMITaddkit({ kitId: this.state.kitId,
+        phoneId: Constants.installationId,
+        phonePushToken: this.state.token,
+        phoneNumber: this.state.number
+        });
+    this.setState({ isModalVisible: !this.state.isModalVisible });
+    this.setState({ lock: !this.state.lock });
+    this.props.navigation.dispatch(NAVIGATIONback);
+  }
+  
+  _handleInfo
   handleBarCodeRead = ({ type, data }) => {
     this.setState({ qr: data });
-    const kitID = data.split(',')[0];
-    console.log(`Type ${type}`)
-    if (kitID.split(':')[0] === 'kitID'){
-      console.log(`Pass security, data: ${kitID.split(':')[1]}`);
-      getToken().then((token)=>{
-        this.props.EMITaddkit({ kitID: kitID.split(':')[1],
-        phoneId: Constants.installationId,
-        phonePushToken: token
-        });//socket.emit('qr', kitID.split(':')[1]);  
-        this.props.navigation.dispatch(NAVIGATIONback);});
-    }
-    
+    const kitId = data.split(',')[0];
+    console.log(`Type ${type}`);
+    if (kitId.split(':')[0] === 'kitID'){
+      const kitIdData = kitId.split(':')[1];
+      console.log(`Pass security, data: ${kitIdData}`);
+      getToken().then(( tokenData )=>{
+        this._tokenAdder({ kitIdData, tokenData });
+      });
+      this._toggleModal();
+      }
   }
 
   render() {
@@ -69,7 +95,19 @@ class AddKit extends React.Component {
           style={{ height: 600, width: 400 }}
         />
         <Text>{this.state.qr}</Text>
-        <Text>{this.state.messages}</Text>
+        <Modal isVisible={this.state.isModalVisible}>
+          <TextInput
+            style={styles.input}
+            value={this.state.phone}
+            onChangeText={number => this.setState({ number })}
+            placeholder="Número de teléfono"
+            keyboardType="phone-pad"
+            onSubmitEditing={()=> this._pusher()}
+            underlineColorAndroid="#f5f5f5"
+            placeholderTextColor="#f5f5f5"
+            selectionColor="#f5f5f5"
+          />
+        </Modal>
       </View>
     );
   }
@@ -90,5 +128,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#ecf0f1',
-  }
+    zindex: 1,
+  },
+  input: {
+    margin: 20,
+    marginBottom: 0,
+    height: 34,
+    paddingHorizontal: 10,
+    borderRadius: 4,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    fontSize: 16,
+    zindex: 2,
+  },
 });
