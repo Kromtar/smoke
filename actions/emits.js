@@ -16,3 +16,7 @@ export const EMITalertresponse = (response) => async dispatch => {
 export const EMITaddkit = (data) => async dispatch => {
   socket.emit('qr', data);
 };
+
+export const EMITremovekit = (data) => async dispatch => { //kit ID Phone ID
+  socket.emit('removekit', data);
+};

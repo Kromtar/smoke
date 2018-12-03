@@ -5,19 +5,49 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Button } from 'react-native';
-import { Icon } from 'react-native-elements';
+  Linking } from 'react-native';
+import { 
+  Icon,
+  Card } from 'react-native-elements';
+import { Constants } from 'expo';
 import * as actions from '../actions';
-import { NAVIGATIONback } from '../actions/navigation';
 
 class KitDetail extends React.Component {
+  static navigationOptions = {
+    title: 'Details',
+  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      iconPress: false
+    };
+  }
+  componentWillUnmount() {
+    if (this.state.iconPress){
+      this.props.EMITremovekit({ kitId: this.props.kitKey, phoneId: Constants.installationId });
+      this.setState({ iconPress: false });
+    }
+  }
   displayMessage() {
     return (<View>
+        <Card 
+        title={this.props.kitKey}
+        >
         <Text>
-          El sensor {this.props.kitKey}
-          esta: {this.props.allKitStatus.kitsList[this.props.kitKey].kitStatus}
+          Estado: {this.props.allKitStatus.kitsList[this.props.kitKey].kitStatus}
         </Text>
-        <Text>Aqui va los detalles del kit, la lista de sus sensores y mas...</Text>
+        <View style={styles.buttonRemove}>
+        <Icon
+          onPress={() => {
+                      this.props.navigation.navigate('Home');
+                      this.setState({ iconPress: true });
+                      }}
+          name={'delete'}
+          size={30}
+        />
+        </View>
+        
+        </Card>
         { this.props.allKitStatus.kitsList[this.props.kitKey].kitStatus === 'mal' &&
         <View>
           <View style={styles.buttonBackView}>
@@ -25,6 +55,7 @@ class KitDetail extends React.Component {
               style={styles.buttonBackOn}
               onPress={() => {
                 this.props.EMITalertresponse({ kitId: this.props.kitKey, response: 'verdadero' });  
+                Linking.openURL('tel:132');
               }}
               >
              <Icon
@@ -43,7 +74,7 @@ class KitDetail extends React.Component {
               }}
               >
              <Icon
-               name={'add-alert'}
+               name={'Safety'}
                size={30}
                color="green"
              />
@@ -87,4 +118,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     borderRadius: 70,
   },
+  buttonRemove: {
+    position: 'absolute',
+    right: 0
+  }
 });

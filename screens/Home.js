@@ -16,7 +16,7 @@ import KitsList from '../components/KitsList';
 class HomeScreen extends React.Component {
 
   static navigationOptions = {
-    title: 'Smoke',
+    title: 'Kaji',
   };
 
   constructor(props) {

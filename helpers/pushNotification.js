@@ -28,5 +28,3 @@ module.exports= {
     getToken,
     handleNotification
 };
-
-//"\"{\"kitsList\":{\"k1000\":{\"kitName\": \"Nombre kit 1\", \"kitStatus\": \"mal\",\"sensor\":{\"k1000s1\":{\"nombre\": \"Sensor 1 del kit 1\", \"status\": \"mal\"}}}}\""

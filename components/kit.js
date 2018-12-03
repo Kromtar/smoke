@@ -3,7 +3,9 @@
 */
 
 import React from 'react';
-import { Text } from 'react-native';
+import {
+  View,
+  StyleSheet } from 'react-native';
 import { Card } from 'react-native-elements';
 
 const kit = (props) => {
@@ -19,12 +21,23 @@ const kit = (props) => {
   }
 
   return (
-    <Card title={name} titleStyle={{ color }}>
-      <Text style={{ marginBottom: 10 }}>
-        Aqui va informacion relevante del kit, iconos, menu ...
-      </Text>
+    <Card title={name} titleStyle={{ color }} >
+      <View 
+        style={{
+          alignSelf: 'stretch',
+          height: 30,
+          backgroundColor: color
+        }} 
+      />
     </Card>
   );
 };
 
+const styles = StyleSheet.create({
+  RectangleShapeView: {
+    alignSelf: 'stretch',
+    height: 30,
+    }
+
+});
 export default kit;

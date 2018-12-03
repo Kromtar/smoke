@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "smoke",
-    "description": "This project is really great.",
-    "slug": "smoke",
+    "name": "Kaji",
+    "description": "Intelligent smoke alarm app",
+    "slug": "Kaji",
     "privacy": "public",
     "sdkVersion": "29.0.0",
     "platforms": ["ios", "android"],
@@ -13,6 +13,9 @@
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
+    },
+  "notification": {
+      "icon": "./assets/icon.png"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

@@ -100,12 +100,12 @@ class AddKit extends React.Component {
             style={styles.input}
             value={this.state.phone}
             onChangeText={number => this.setState({ number })}
-            placeholder="Número de teléfono"
+            placeholder="Número de teléfono para emergencias"
             keyboardType="phone-pad"
             onSubmitEditing={()=> this._pusher()}
-            underlineColorAndroid="#f5f5f5"
-            placeholderTextColor="#f5f5f5"
-            selectionColor="#f5f5f5"
+            underlineColorAndroid="#ffffff"
+            placeholderTextColor="#ffffff"
+            selectionColor="ffffff"
           />
         </Modal>
       </View>
@@ -140,5 +140,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     fontSize: 16,
     zindex: 2,
+    color: '#f5f5f5'
   },
 });
